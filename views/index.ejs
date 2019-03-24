@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Stream</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <style>
+    .field {
+      display: flex;
+      margin: 5px;
+    }
+  </style>
+  <body>
+    <div>
+      <form action='/upload' method="POST" enctype="multipart/form-data" id="data">
+        <label class="field" for="songname">Song Name: <input type="text" name="songname" id="songname"></label>
+        <label class="field" for="artist">Artist: <input type="text" name="artist" id="artist"></label>
+        <label class="field" for="album">Album: <input type="text" name="album" id="album"></label>
+        <label class="field" for="daterealeased">Date Realeased: <input type="date" name="daterealeased" id="daterealeased"></label>
+        <label class="field" for="genre">Genre: <input type="text" name="genre" id="genre"></label>
+        <label class="field" for="song">Song: <input type="file" name="song" id="song"></label>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </body>
+  <script src="js/axios.js"></script>
+  <script>
+      function submitData() {
+        console.log("you clicked button")
+        var data = new FormData();
+        data = document.getElementById('data')
+        console.log(data)
+        var config = {
+          // this function will run during the upload process and will be fired every second during upload
+          onUploadProgress: function(progressEvent){
+            var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+            console.log(percentCompleted)
+          }
+        };
+        axios.post('/upload',data,config)
+            .then(function(res){
+              console.log(res.data)
+            })
+            .catch(function(err){
+              console.log(err.message)
+            })
+      }
+  </script>
+</html>
