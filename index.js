@@ -10,7 +10,6 @@ const fs = require('fs');
 //User Defined Requirements
 const mongoose = require('./db/db')
 const Song = require('./models/song')
-const helper = require('./helper')
 
 // Express Apps Instances
 var app = express()
@@ -67,6 +66,10 @@ app.get('/song/play/:songid', async (req,res) => {
   await Song.findById(songid).then((song) => {
     if(song) 
       songDetails = song
+  }, (err) => {
+    res.status(404).json({
+      message: 'No Such Song'
+    })
   })
   if(songDetails) {
     const rr = fs.createReadStream(`${__dirname}${songDetails.location}`);
